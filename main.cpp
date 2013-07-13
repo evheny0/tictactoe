@@ -6,7 +6,6 @@ int main(int argc, char *argv[])
     SDL_Surface *screen;
     screen = screenInit();
     if (!screen) {
-        std::cerr << "Initialization failed.";
         return 1;
     }
 
@@ -15,27 +14,20 @@ int main(int argc, char *argv[])
 
 bool mainLoop(SDL_Surface *screen)
 {
-    bool isEnd = false;
-    bool player = X_PLAYER;
+    int gameStatus = X_PLAYER;
     Field field;
-
     SDL_Event event;
-    /*
-    SDL_Surface *fieldImg = loadImage("img/field.png");
-    SDL_Surface *xImg = loadImage("img/x.png");
-    SDL_Surface *oImg = loadImage("img/o.png");
-    if (!fieldImg || !xImg || !oImg) {
-        return 1;
-    }*/
-    while (!isEnd) {
+
+    while (gameStatus != END) {
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                isEnd = 1;
+                gameStatus = END;
             }
-            field.handleEvents(event, player);
+            field.handleEvents(event, gameStatus);
         }
 
-        field.render(screen);
+        field.checkVictory(gameStatus);
+        field.render(screen, gameStatus);
 
         if (SDL_Flip(screen) == -1) {
             return 1;

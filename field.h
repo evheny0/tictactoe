@@ -16,12 +16,15 @@ class Field
     SDL_Surface *fieldImg;
     SDL_Surface *xImg;
     SDL_Surface *oImg;
+    SDL_Surface *xWinImg;
+    SDL_Surface *oWinImg;
   public:
 	Field();
 	bool setValue(int x, int y, int value);
-    int checkValue(int x, int y);
-    void handleEvents(SDL_Event event, bool& player);
-    void render(SDL_Surface *screen);
+    void cleanValues();
+    void handleEvents(SDL_Event event, int& gameStatus);
+    void checkVictory(int& gameStatus);
+    void render(SDL_Surface *screen, int gameStatus);
 };
 
 #endif
