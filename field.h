@@ -20,6 +20,7 @@ class Field
     SDL_Surface *oWinImg;
   public:
 	Field();
+    ~Field();
 	bool setValue(int x, int y, int value);
     void cleanValues();
     void handleEvents(SDL_Event event, int& gameStatus);

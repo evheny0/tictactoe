@@ -10,6 +10,15 @@ Field::Field()
     oWinImg = loadImage("img/o_win.png");
 }
 
+Field::~Field()
+{
+    SDL_FreeSurface(fieldImg);
+    SDL_FreeSurface(xImg);
+    SDL_FreeSurface(oImg);
+    SDL_FreeSurface(xWinImg);
+    SDL_FreeSurface(oWinImg);
+}
+
 bool Field::setValue(int x, int y, int value)
 {
     //need values for warnings

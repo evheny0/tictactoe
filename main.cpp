@@ -9,7 +9,12 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    return mainLoop(screen);
+    if(mainLoop(screen)) {
+        return 1;
+    }
+    
+    SDL_Quit();
+    return 0;
 }
 
 bool mainLoop(SDL_Surface *screen)
@@ -33,4 +38,5 @@ bool mainLoop(SDL_Surface *screen)
             return 1;
         }
     }
+    return 0;
 }

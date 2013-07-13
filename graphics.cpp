@@ -11,7 +11,7 @@ SDL_Surface *screenInit()
 
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
     SDL_WM_SetCaption("Tic Tac Toe", NULL);
-    SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
+    SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 231, 238, 226));
     
     return screen;
 }
