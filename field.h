@@ -16,11 +16,14 @@ class Field
 {
 	int values[3][3];
     SDL_Surface *fieldImg;
+    SDL_Surface *xHoverImg;
+    SDL_Surface *oHoverImg;
     SDL_Surface *xImg;
     SDL_Surface *oImg;
     SDL_Surface *xWinImg;
     SDL_Surface *oWinImg;
     SDL_Surface *drawImg;
+    SDL_Rect hoverCoords;
   public:
 	Field();
     ~Field();

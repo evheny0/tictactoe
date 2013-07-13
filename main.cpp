@@ -1,6 +1,8 @@
 #include "main.h"
 
 //анимация рисования
+
+//подсвечивание клеток. Прозрачное значение
 int main(int argc, char *argv[])
 {
     SDL_Surface *screen;
@@ -9,10 +11,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if(mainLoop(screen)) {
+    if (mainLoop(screen)) {
         return 1;
     }
-    
+
     SDL_Quit();
     return 0;
 }
