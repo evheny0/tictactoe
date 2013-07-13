@@ -8,6 +8,7 @@ Field::Field()
     oImg = loadImage("img/o.png");
     xWinImg = loadImage("img/x_win.png");
     oWinImg = loadImage("img/o_win.png");
+    drawImg = loadImage("img/draw.png");
 }
 
 Field::~Field()
@@ -42,7 +43,7 @@ void Field::cleanValues()
 
 void Field::handleEvents(SDL_Event event, int& gameStatus)
 {
-    if ((gameStatus == X_PLAYER_WIN) || (gameStatus == O_PLAYER_WIN) || gameStatus == END) {
+    if ((gameStatus == X_PLAYER_WIN) || (gameStatus == O_PLAYER_WIN) || (gameStatus == END)) {
         return;
     }
     int x, y;
@@ -79,21 +80,30 @@ void Field::checkVictory(int& gameStatus)
         return;
     }
     int i, j;
+    bool isEmptyCells = 0;
     for (i = 0; i < 3; i++) {
-        if ((values[i][0] == values[i][1]) && (values[i][0] == values[i][2]) && values[i][0] != EMPTY_CELL) {
-            if (values[i][0] == X_CELL) {
+        if (((values[i][0] == values[i][1]) && (values[i][0] == values[i][2]) && (values[i][0] != EMPTY_CELL)) ||
+            ((values[0][i] == values[1][i]) && (values[0][i] == values[2][i]) && (values[0][i] != EMPTY_CELL)) ||
+            ((values[0][0] == values[1][1]) && (values[0][0] == values[2][2]) && (values[0][0] != EMPTY_CELL)) ||
+            ((values[0][2] == values[1][1]) && (values[0][2] == values[2][0]) && (values[0][2] != EMPTY_CELL))) {
+            if (values[i][i] == X_CELL) {
                 gameStatus = X_PLAYER_WIN;
+                return;
             } else {
                 gameStatus = O_PLAYER_WIN;
+                return;
             }
         }
-        if ((values[0][i] == values[1][i]) && (values[0][i] == values[2][i]) && values[0][i] != EMPTY_CELL) {
-            if (values[0][i] == X_CELL) {
-                gameStatus = X_PLAYER_WIN;
-            } else {
-                gameStatus = O_PLAYER_WIN;
+
+        for (j = 0; j < 3; j++) {
+            if (values[i][j] == EMPTY_CELL) {
+                isEmptyCells = 1;
             }
         }
+    }
+
+    if (isEmptyCells == 0) {
+        gameStatus = DRAW;
     }
 }
 
@@ -113,9 +123,15 @@ void Field::render(SDL_Surface *screen, int gameStatus)
             }
         }
     }
-    if (gameStatus == X_PLAYER_WIN) {
+    switch (gameStatus) {
+    case X_PLAYER_WIN:
         applySurface(70, 135, xWinImg, screen);
-    } else if (gameStatus == O_PLAYER_WIN) {
+        break;
+    case O_PLAYER_WIN:
         applySurface(70, 135, oWinImg, screen);
+        break;
+    case DRAW:
+        applySurface(70, 135, drawImg, screen);
+        break;
     }
 }

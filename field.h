@@ -6,9 +6,11 @@
 #include <string>
 #include "main.h"
 
-#define EMPTY_CELL 0
-#define X_CELL 1
-#define O_CELL 2
+enum FieldCell { 
+    EMPTY_CELL,
+    X_CELL,
+    O_CELL
+};
 
 class Field
 {
@@ -18,6 +20,7 @@ class Field
     SDL_Surface *oImg;
     SDL_Surface *xWinImg;
     SDL_Surface *oWinImg;
+    SDL_Surface *drawImg;
   public:
 	Field();
     ~Field();

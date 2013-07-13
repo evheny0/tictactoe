@@ -13,6 +13,7 @@ enum GameStatus {
     O_PLAYER,
     X_PLAYER_WIN,
     O_PLAYER_WIN,
+    DRAW,
     END
 };
 
