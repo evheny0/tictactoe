@@ -7,6 +7,7 @@
 
 #include "field.h"
 #include "graphics.h"
+#include "menu.h"
 
 enum GameStatus {  
     X_PLAYER,
@@ -14,7 +15,8 @@ enum GameStatus {
     X_PLAYER_WIN,
     O_PLAYER_WIN,
     DRAW,
-    END
+    END,
+    NEW_GAME
 };
 
 bool mainLoop(SDL_Surface *screen);

@@ -1,4 +1,4 @@
-OBJ = main.o field.o graphics.o
+OBJ = main.o field.o graphics.o menu.o
 CFLAGS = -Wall
 LIBS = -lSDL -lSDL_image -lSDL_ttf
 

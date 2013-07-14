@@ -2,7 +2,6 @@
 
 //анимация рисования
 
-//подсвечивание клеток. Прозрачное значение
 int main(int argc, char *argv[])
 {
     SDL_Surface *screen;
@@ -23,6 +22,7 @@ bool mainLoop(SDL_Surface *screen)
 {
     int gameStatus = X_PLAYER;
     Field field;
+    Menu menu;
     SDL_Event event;
 
     while (gameStatus != END) {
@@ -31,10 +31,12 @@ bool mainLoop(SDL_Surface *screen)
                 gameStatus = END;
             }
             field.handleEvents(event, gameStatus);
+            menu.handleEvents(event, gameStatus);
         }
 
-        field.checkVictory(gameStatus);
+        field.checkGameStatus(gameStatus);
         field.render(screen, gameStatus);
+        menu.render(screen, gameStatus);
 
         if (SDL_Flip(screen) == -1) {
             return 1;

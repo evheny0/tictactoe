@@ -5,7 +5,7 @@ Field::Field()
     cleanValues();
     hoverCoords.x = -1;
     hoverCoords.y = -1;
-    fieldImg = loadImage("img/field.png");
+    backgroundImg = loadImage("img/bg.png");
     xHoverImg = loadImage("img/x_hover.png");
     oHoverImg = loadImage("img/o_hover.png");
     xImg = loadImage("img/x.png");
@@ -17,7 +17,7 @@ Field::Field()
 
 Field::~Field()
 {
-    SDL_FreeSurface(fieldImg);
+    SDL_FreeSurface(backgroundImg);
     SDL_FreeSurface(xHoverImg);
     SDL_FreeSurface(oHoverImg);
     SDL_FreeSurface(xImg);
@@ -29,7 +29,6 @@ Field::~Field()
 
 bool Field::setValue(int x, int y, int value)
 {
-    //need values for warnings
     if ((value != EMPTY_CELL) && (values[y][x] != EMPTY_CELL)) {
         return false;
     } else {
@@ -50,17 +49,52 @@ void Field::cleanValues()
 
 void Field::handleEvents(SDL_Event event, int& gameStatus)
 {
-    if ((gameStatus == X_PLAYER_WIN) || (gameStatus == O_PLAYER_WIN) || (gameStatus == END)) {
+    if (gameStatus == END) {
         return;
     }
 
     int x, y;
 
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
+        x = (event.button.x - 15) / 110;
+        y = (event.button.y - 15) / 110;
+        if ((event.button.button == SDL_BUTTON_LEFT) && (x < 3) && (y < 3)) {
+            switch (gameStatus) {
+            case X_PLAYER_WIN:
+                cleanValues();
+                gameStatus = O_PLAYER;
+                return;
+            case O_PLAYER_WIN:
+                cleanValues();
+                gameStatus = X_PLAYER;
+                return;
+            case DRAW:
+                cleanValues();
+                gameStatus = rand() % 2;
+                return;
+            }
+
+            if (values[y][x] == EMPTY_CELL) {
+                if (gameStatus == X_PLAYER) {
+                    values[y][x] = X_CELL;
+                    gameStatus = O_PLAYER;
+                    hoverCoords.x = -1;
+                    hoverCoords.y = -1;
+                } else {
+                    values[y][x] = O_CELL;
+                    gameStatus = X_PLAYER;
+                    hoverCoords.x = -1;
+                    hoverCoords.y = -1;
+                }
+            }
+        }
+    }
+
     if (event.type == SDL_MOUSEMOTION) {
-        x = (event.button.x - 10) / 110;
-        y = (event.button.y - 10) / 110;
-        if (event.button.x && event.button.y && (x < 3) && (y < 3)) {
-            switch (values[y][x]) {  //need refactoring
+        x = (event.motion.x - 15) / 110;
+        y = (event.motion.y - 15) / 110;
+        if ((x < 3) && (y < 3)) {
+            switch (values[y][x]) {
             case X_CELL:
                 hoverCoords.x = -1;
                 hoverCoords.y = -1;
@@ -80,36 +114,16 @@ void Field::handleEvents(SDL_Event event, int& gameStatus)
         }
     }
 
-    if (event.type == SDL_MOUSEBUTTONDOWN) {
-        x = (event.button.x - 10) / 110;
-        y = (event.button.y - 10) / 110;
-        if ((event.button.button == SDL_BUTTON_LEFT) && (x < 3) && (y < 3)) {
-            switch (values[y][x]) {
-            case X_CELL:
-                break;
-            case O_CELL:
-                break;
-            case EMPTY_CELL:
-                if (gameStatus == X_PLAYER) {
-                    values[y][x] = X_CELL;
-                    gameStatus = O_PLAYER;
-                    hoverCoords.x = -1;
-                    hoverCoords.y = -1;
-                } else {
-                    values[y][x] = O_CELL;
-                    gameStatus = X_PLAYER;
-                    hoverCoords.x = -1;
-                    hoverCoords.y = -1;
-                }
-                break;
-            }
-        }
-    }
 }
 
-void Field::checkVictory(int& gameStatus)
+void Field::checkGameStatus(int& gameStatus)
 {
     if (gameStatus == END) {
+        return;
+    }
+    if (gameStatus == NEW_GAME) {
+        cleanValues();
+        gameStatus == X_PLAYER;
         return;
     }
 
@@ -153,13 +167,13 @@ void Field::checkVictory(int& gameStatus)
 void Field::render(SDL_Surface *screen, int gameStatus)
 {
     int i, j;
-    applySurface(0, 0, fieldImg, screen);
+    applySurface(0, 0, backgroundImg, screen);
 
     if (hoverCoords.x != -1) {
         if (gameStatus == X_PLAYER) {
-            applySurface(10 + (hoverCoords.x * 110), 10 + (hoverCoords.y * 110), xHoverImg, screen);
+            applySurface(15 + (hoverCoords.x * 110), 15 + (hoverCoords.y * 110), xHoverImg, screen);
         } else if (gameStatus == O_PLAYER) {
-            applySurface(10 + (hoverCoords.x * 110), 10 + (hoverCoords.y * 110), oHoverImg, screen);
+            applySurface(15 + (hoverCoords.x * 110), 15 + (hoverCoords.y * 110), oHoverImg, screen);
         }
         
     }
@@ -168,10 +182,10 @@ void Field::render(SDL_Surface *screen, int gameStatus)
         for (j = 0; j < 3; j++) {
             switch (values[i][j]) {
             case X_CELL:
-                applySurface(10 + (j * 110), 10 + (i * 110), xImg, screen);
+                applySurface(15 + (j * 110), 15 + (i * 110), xImg, screen);
                 break;
             case O_CELL:
-                applySurface(10 + (j * 110), 10 + (i * 110), oImg, screen);
+                applySurface(15 + (j * 110), 15 + (i * 110), oImg, screen);
                 break;
             }
         }

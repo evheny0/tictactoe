@@ -15,7 +15,7 @@ enum FieldCell {
 class Field
 {
 	int values[3][3];
-    SDL_Surface *fieldImg;
+    SDL_Surface *backgroundImg;
     SDL_Surface *xHoverImg;
     SDL_Surface *oHoverImg;
     SDL_Surface *xImg;
@@ -30,7 +30,7 @@ class Field
 	bool setValue(int x, int y, int value);
     void cleanValues();
     void handleEvents(SDL_Event event, int& gameStatus);
-    void checkVictory(int& gameStatus);
+    void checkGameStatus(int& gameStatus);
     void render(SDL_Surface *screen, int gameStatus);
 };
 
