@@ -3,7 +3,6 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <string>
 #include "main.h"
 
 enum FieldCell { 
@@ -27,7 +26,6 @@ class Field
   public:
 	Field();
     ~Field();
-	bool setValue(int x, int y, int value);
     void cleanValues();
     void handleEvents(SDL_Event event, int& gameStatus);
     void checkGameStatus(int& gameStatus);

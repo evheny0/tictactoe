@@ -4,7 +4,7 @@ SDL_Surface *screenInit()
 {
     SDL_Surface *screen;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+    if ((SDL_Init(SDL_INIT_EVERYTHING) == -1) || (TTF_Init() == -1)) {
         std::cerr << "Initialization failed.";
         return NULL;
     }

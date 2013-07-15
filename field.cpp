@@ -13,6 +13,11 @@ Field::Field()
     xWinImg = loadImage("img/x_win.png");
     oWinImg = loadImage("img/o_win.png");
     drawImg = loadImage("img/draw.png");
+
+    if (!backgroundImg || !xHoverImg || !oHoverImg || !xImg || !oImg || !xWinImg || !oWinImg || !drawImg) {
+        std::cerr << "Can't load files\n";
+        exit(1);
+    }
 }
 
 Field::~Field()
@@ -27,22 +32,12 @@ Field::~Field()
     SDL_FreeSurface(drawImg);
 }
 
-bool Field::setValue(int x, int y, int value)
-{
-    if ((value != EMPTY_CELL) && (values[y][x] != EMPTY_CELL)) {
-        return false;
-    } else {
-        values[y][x] = value;
-        return true;
-    }
-}
-
 void Field::cleanValues()
 {
     int i, j;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            values[i][j] = 0;
+            values[i][j] = EMPTY_CELL;
         }
     }
 }
@@ -122,9 +117,8 @@ void Field::checkGameStatus(int& gameStatus)
         return;
     }
     if (gameStatus == NEW_GAME) {
-        cleanValues();
         gameStatus == X_PLAYER;
-        return;
+        cleanValues();
     }
 
     int i, j;

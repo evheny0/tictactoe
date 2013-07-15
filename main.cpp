@@ -1,7 +1,5 @@
 #include "main.h"
 
-//анимация рисования
-
 int main(int argc, char *argv[])
 {
     SDL_Surface *screen;
@@ -35,6 +33,8 @@ bool mainLoop(SDL_Surface *screen)
         }
 
         field.checkGameStatus(gameStatus);
+        menu.checkScore(gameStatus);
+
         field.render(screen, gameStatus);
         menu.render(screen, gameStatus);
 

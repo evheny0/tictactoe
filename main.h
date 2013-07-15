@@ -2,8 +2,6 @@
 #define TTT_MAIN_H
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <string>
 
 #include "field.h"
 #include "graphics.h"
